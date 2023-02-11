@@ -1,0 +1,39 @@
+package com.skypro.recipesapp.services.impl;
+
+import com.skypro.recipesapp.exception.ValidationException;
+import com.skypro.recipesapp.model.Ingredient;
+import com.skypro.recipesapp.services.IngredientService;
+import com.skypro.recipesapp.services.ValidationService;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class IngredientServiceImpl implements IngredientService {
+
+    private static long id = 1;
+    private final Map<Long, Ingredient> ingredients = new HashMap<>();
+    private final ValidationService validationService;
+
+    public IngredientServiceImpl(ValidationService validationService) {
+        this.validationService = validationService;
+    }
+
+    @Override
+    public Ingredient addNewIngredient(Ingredient ingredient) {
+        if (!validationService.validate(ingredient)) {
+            throw new ValidationException(ingredient.toString());
+        }
+        return ingredients.put(id++, ingredient);
+
+    }
+
+    @Override
+    public Optional<Ingredient> getIngredientById(long id) {
+        return Optional.ofNullable(ingredients.get(id));
+    }
+
+
+}
