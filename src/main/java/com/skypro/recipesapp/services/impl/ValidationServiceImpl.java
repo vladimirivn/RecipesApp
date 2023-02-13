@@ -12,6 +12,7 @@ public class ValidationServiceImpl implements ValidationService {
     public boolean validate(Recipe recipe) {
         return recipe != null
                 && recipe.getTitle() != null
+                && !recipe.getTitle().isEmpty()
                 && recipe.getCookingInstructions() != null
                 && recipe.getIngredients() != null
                 && !recipe.getIngredients().isEmpty()

@@ -26,7 +26,8 @@ public class IngredientServiceImpl implements IngredientService {
         if (!validationService.validate(ingredient)) {
             throw new ValidationException(ingredient.toString());
         }
-        return ingredients.put(id++, ingredient);
+        ingredients.put(id++, ingredient);
+        return ingredient;
 
     }
 
@@ -40,7 +41,8 @@ public class IngredientServiceImpl implements IngredientService {
         if (!validationService.validate(ingredient)) {
             throw new ValidationException(ingredient.toString());
         }
-        return ingredients.replace(id, ingredient);
+        ingredients.replace(id, ingredient);
+        return ingredient;
     }
 
     @Override

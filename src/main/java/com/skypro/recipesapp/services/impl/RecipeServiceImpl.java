@@ -27,7 +27,8 @@ public class RecipeServiceImpl implements RecipeService {
         if (!validationService.validate(recipe)) {
             throw new ValidationException(recipe.toString());
         }
-        return recipes.put(id++, recipe);
+        recipes.put(id++, recipe);
+        return recipe;
     }
 
     @Override
@@ -40,13 +41,15 @@ public class RecipeServiceImpl implements RecipeService {
         if (!validationService.validate(recipe)) {
             throw new ValidationException(recipe.toString());
         }
-        return recipes.replace(id, recipe);
+        recipes.replace(id, recipe);
+        return recipe;
     }
 
     @Override
     public Recipe deleteRecipeById(long id) {
         if (!recipes.containsKey(id)) {
             throw new ValidationException(recipes.toString());
+//            return null;
         }
         return recipes.remove(id);
     }
