@@ -20,6 +20,7 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     public boolean validate(Ingredient ingredient) {
         return ingredient != null
-                && ingredient.getProductName()!= null;
+                && ingredient.getProductName()!= null
+                && !ingredient.getProductName().isEmpty();
     }
 }
