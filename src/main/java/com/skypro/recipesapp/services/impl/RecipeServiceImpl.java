@@ -27,12 +27,36 @@ public class RecipeServiceImpl implements RecipeService {
         if (!validationService.validate(recipe)) {
             throw new ValidationException(recipe.toString());
         }
-        return recipes.put(id++, recipe);
+        recipes.put(id++, recipe);
+        return recipe;
     }
 
     @Override
     public Optional<Recipe> getRecipeById(long id) {
         return Optional.ofNullable(recipes.get(id));
+    }
+
+    @Override
+    public Recipe editRecipeById(long id, Recipe recipe) {
+        if (!validationService.validate(recipe)) {
+            throw new ValidationException(recipe.toString());
+        }
+        recipes.replace(id, recipe);
+        return recipe;
+    }
+
+    @Override
+    public Recipe deleteRecipeById(long id) {
+        if (!recipes.containsKey(id)) {
+            throw new ValidationException(recipes.toString());
+//            return null;
+        }
+        return recipes.remove(id);
+    }
+
+    @Override
+    public Map<Long, Recipe> getAllRecipes() {
+        return recipes;
     }
 
 }
