@@ -1,6 +1,5 @@
 package com.skypro.recipesapp.services;
 
-import com.skypro.recipesapp.model.Ingredient;
 import com.skypro.recipesapp.model.Recipe;
 
 import java.util.Map;
