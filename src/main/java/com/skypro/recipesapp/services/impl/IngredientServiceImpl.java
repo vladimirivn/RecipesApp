@@ -55,6 +55,9 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Map<Long, Ingredient> getAllIngredients() {
+//        if (ingredients.isEmpty()) {
+//            throw new ValidationException(ingredients.toString());
+//        }
         return ingredients;
     }
 

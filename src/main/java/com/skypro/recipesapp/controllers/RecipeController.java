@@ -40,7 +40,11 @@ public class RecipeController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Получение рецепта", description = "Получение рецепта по его id")
-    @ApiResponse(responseCode = "200", description = "Рецепт получен")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Рецепт получен"),
+            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+    })
+
 
     public ResponseEntity<Recipe> getRecipeById(@PathVariable long id) {
         return ResponseEntity.of(recipeService.getRecipeById(id));
@@ -48,7 +52,10 @@ public class RecipeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Изменение рецепта", description = "Изменение рецепта по его id.")
-    @ApiResponse(responseCode = "200", description = "Рецепт изменен")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Рецепт изменен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка изменения рецепта")
+    })
 
     public ResponseEntity<Recipe> editRecipeById(@PathVariable long id, @RequestBody Recipe recipe) {
         return ResponseEntity.ok(recipeService.editRecipeById(id, recipe));
@@ -56,8 +63,10 @@ public class RecipeController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удаление рецепта", description = "Удаление рецепта по его id.")
-    @ApiResponse(responseCode = "200", description = "Рецепт удален")
-
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Рецепт удален"),
+            @ApiResponse(responseCode = "400", description = "Ошибка удаления рецепта")
+    })
     public ResponseEntity<Recipe> deleteIngredientById(@PathVariable long id) {
         return ResponseEntity.ok(recipeService.deleteRecipeById(id));
     }
