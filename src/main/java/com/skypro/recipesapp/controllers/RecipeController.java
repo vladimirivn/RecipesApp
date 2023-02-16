@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,10 @@ public class RecipeController {
 
     @PostMapping()
     @Operation(summary = "Добавление нового рецепта")
-    @ApiResponse(responseCode = "200", description = "Рецепт добавлен")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Рецепт добавлен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка добавления рецепта")
+    })
     @Parameters(value = {@Parameter(name = "Название", example = "Коктейль Отвертка")})
 
     public ResponseEntity<Recipe> addNewRecipe(@RequestBody Recipe recipe) {

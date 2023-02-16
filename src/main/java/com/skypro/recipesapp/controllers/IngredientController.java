@@ -4,6 +4,7 @@ import com.skypro.recipesapp.model.Ingredient;
 import com.skypro.recipesapp.services.IngredientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,10 @@ public class IngredientController {
 
     @PostMapping()
     @Operation(summary = "Добавление нового ингредиента")
-    @ApiResponse(responseCode = "200", description = "Ингредиент добавлен")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ингредиент добавлен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка добавления ингредиента")
+    })
 
     public ResponseEntity<Ingredient> addNewIngredient(@RequestBody Ingredient ingredient) {
         return ResponseEntity.ok(ingredientService.addNewIngredient(ingredient));
