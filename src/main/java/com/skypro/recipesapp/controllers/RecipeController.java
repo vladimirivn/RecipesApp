@@ -25,7 +25,6 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-
     @PostMapping()
     @Operation(summary = "Добавление нового рецепта")
     @ApiResponses({
@@ -67,7 +66,7 @@ public class RecipeController {
             @ApiResponse(responseCode = "200", description = "Рецепт удален"),
             @ApiResponse(responseCode = "400", description = "Ошибка удаления рецепта")
     })
-    public ResponseEntity<Recipe> deleteIngredientById(@PathVariable long id) {
+    public ResponseEntity<Recipe> deleteRecipeById(@PathVariable long id) {
         return ResponseEntity.ok(recipeService.deleteRecipeById(id));
     }
 

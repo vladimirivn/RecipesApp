@@ -1,0 +1,36 @@
+{
+  "1": {
+    "title": "Рецепт 1 новый",
+    "cookingTime": 10,
+    "ingredients": [
+      {
+        "productName": "Ингредиент 1",
+        "count": 1,
+        "unit": "гр."
+      }
+    ],
+    "cookingInstructions": [
+      "Шаг 1"
+    ]
+  },
+  "2": {
+    "title": "Рецепт 2",
+    "cookingTime": 20,
+    "ingredients": [
+      {
+        "productName": "Ингредиент 1",
+        "count": 1,
+        "unit": "гр."
+      },
+      {
+        "productName": "Ингредиент 2",
+        "count": 2,
+        "unit": "шт."
+      }
+    ],
+    "cookingInstructions": [
+      "Шаг 1",
+      "Шаг 2"
+    ]
+  }
+}
