@@ -3,6 +3,8 @@ package com.skypro.recipesapp.controllers;
 import com.skypro.recipesapp.services.IngredientService;
 import com.skypro.recipesapp.services.RecipeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -29,6 +31,10 @@ public class FilesController {
 
     @GetMapping("/recipe/download")
     @Operation(summary = "Выгрузка файла рецептов")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Файл рецептов выгружен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка выгрузки файла рецептов")
+    })
 
     public ResponseEntity<InputStreamResource> downloadDataFile() {
         try {
@@ -47,6 +53,11 @@ public class FilesController {
 
     @PostMapping(value = "/recipe/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузка файла рецептов")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Файл рецептов загружен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка загрузки фала рецептов"),
+            @ApiResponse(responseCode = "500", description = "Выбран некорректный файл")
+    })
 
     public ResponseEntity<String> uploadDatafile(@RequestParam MultipartFile file) {
         try {
@@ -59,6 +70,11 @@ public class FilesController {
     }
     @PostMapping(value = "/ingredient/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузка файла ингредиентов")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Файл ингредиентов загружен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка загрузки файла ингредиентов"),
+            @ApiResponse(responseCode = "500", description = "Выбран некорректный файл")
+    })
 
     public ResponseEntity<String> uploadIngredient(@RequestParam MultipartFile file) {
         try {
