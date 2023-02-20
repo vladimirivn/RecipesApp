@@ -3,13 +3,17 @@ package com.skypro.recipesapp.services.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.skypro.recipesapp.exception.ValidationException;
 import com.skypro.recipesapp.model.Recipe;
+import com.skypro.recipesapp.services.FileService;
 import com.skypro.recipesapp.services.RecipeService;
 import com.skypro.recipesapp.services.ValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,11 +24,12 @@ import java.util.Optional;
 
 public class RecipeServiceImpl implements RecipeService {
 
+    private final FileService fileService;
     private static long id = 1;
     private Map<Long, Recipe> recipes = new HashMap<>();
     private final ValidationService validationService;
 
-    private final FileService filesService;
+    private final FileServiceImpl filesService;
 
     @Value("${path.to.data.files}")
     private String dataFilePath;
@@ -35,16 +40,18 @@ public class RecipeServiceImpl implements RecipeService {
 
     @PostConstruct
     private void init() {
-        recipePath = Path.of(dataFilePath,dataFileName);
-        recipes = filesService.readDataFromFile(recipePath, new TypeReference<>() {});
+        recipePath = Path.of(dataFilePath, dataFileName);
+        recipes = filesService.readFromFile(recipePath, new TypeReference<>() {
+        });
     }
+
     @Override
     public Recipe addNewRecipe(Recipe recipe) {
         if (!validationService.validate(recipe)) {
             throw new ValidationException(recipe.toString());
         }
         recipes.put(id++, recipe);
-        filesService.saveDataToFile(recipes, recipePath);
+        filesService.saveToFile(recipes, recipePath);
         return recipe;
     }
 
@@ -59,7 +66,7 @@ public class RecipeServiceImpl implements RecipeService {
             throw new ValidationException(recipe.toString());
         }
         recipes.replace(id, recipe);
-        filesService.saveDataToFile(recipes, recipePath);
+        filesService.saveToFile(recipes, recipePath);
         return recipe;
     }
 
@@ -69,13 +76,25 @@ public class RecipeServiceImpl implements RecipeService {
             throw new ValidationException(recipes.toString());
         }
         Recipe recipe = recipes.remove(id);
-        filesService.saveDataToFile(recipes, recipePath);
+        filesService.saveToFile(recipes, recipePath);
         return recipe;
     }
 
     @Override
     public Map<Long, Recipe> getAllRecipes() {
         return recipes;
+    }
+
+    @Override
+    public File readFile() {
+        return recipePath.toFile();
+    }
+
+    @Override
+    public void uploadFile(MultipartFile file) throws IOException {
+        fileService.uploadFile(file, recipePath);
+        recipes = fileService.readFromFile(recipePath, new TypeReference<>() {
+        });
     }
 
 }

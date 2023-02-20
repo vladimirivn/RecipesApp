@@ -3,13 +3,17 @@ package com.skypro.recipesapp.services.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.skypro.recipesapp.exception.ValidationException;
 import com.skypro.recipesapp.model.Ingredient;
+import com.skypro.recipesapp.services.FileService;
 import com.skypro.recipesapp.services.IngredientService;
 import com.skypro.recipesapp.services.ValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,10 +24,11 @@ import java.util.Optional;
 
 public class IngredientServiceImpl implements IngredientService {
 
+    private final FileService fileService;
     private static long id = 1;
     private Map<Long, Ingredient> ingredients = new HashMap<>();
     private final ValidationService validationService;
-    private final FileService filesService;
+    private final FileServiceImpl filesService;
 
     @Value("${path.to.data.files}")
     private String dataFilePath;
@@ -35,7 +40,7 @@ public class IngredientServiceImpl implements IngredientService {
     @PostConstruct
     private void init() {
         ingredientPath = Path.of(dataFilePath, dataFileName);
-        ingredients = filesService.readDataFromFile(ingredientPath, new TypeReference<>() {
+        ingredients = filesService.readFromFile(ingredientPath, new TypeReference<>() {
         });
     }
 
@@ -45,7 +50,7 @@ public class IngredientServiceImpl implements IngredientService {
             throw new ValidationException(ingredient.toString());
         }
         ingredients.put(id++, ingredient);
-        filesService.saveDataToFile(ingredients, ingredientPath);
+        filesService.saveToFile(ingredients, ingredientPath);
         return ingredient;
 
     }
@@ -61,7 +66,7 @@ public class IngredientServiceImpl implements IngredientService {
             throw new ValidationException(ingredient.toString());
         }
         ingredients.replace(id, ingredient);
-        filesService.saveDataToFile(ingredients, ingredientPath);
+        filesService.saveToFile(ingredients, ingredientPath);
         return ingredient;
     }
 
@@ -71,13 +76,20 @@ public class IngredientServiceImpl implements IngredientService {
             throw new ValidationException(ingredients.toString());
         }
         Ingredient ingredient = ingredients.remove(id);
-        filesService.saveDataToFile(ingredients, ingredientPath);
+        filesService.saveToFile(ingredients, ingredientPath);
         return ingredient;
     }
 
     @Override
     public Map<Long, Ingredient> getAllIngredients() {
         return ingredients;
+    }
+
+    @Override
+    public void uploadFile(MultipartFile file) throws IOException {
+        fileService.uploadFile(file, ingredientPath);
+        ingredients = filesService.readFromFile(ingredientPath, new TypeReference<>() {
+        });
     }
 
 
