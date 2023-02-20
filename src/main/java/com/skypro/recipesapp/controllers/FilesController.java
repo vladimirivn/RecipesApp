@@ -56,7 +56,7 @@ public class FilesController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Файл рецептов загружен"),
             @ApiResponse(responseCode = "400", description = "Ошибка загрузки фала рецептов"),
-            @ApiResponse(responseCode = "500", description = "Выбран некорректный файл")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
 
     public ResponseEntity<String> uploadDatafile(@RequestParam MultipartFile file) {
@@ -73,7 +73,7 @@ public class FilesController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Файл ингредиентов загружен"),
             @ApiResponse(responseCode = "400", description = "Ошибка загрузки файла ингредиентов"),
-            @ApiResponse(responseCode = "500", description = "Выбран некорректный файл")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка на сервере")
     })
 
     public ResponseEntity<String> uploadIngredient(@RequestParam MultipartFile file) {
