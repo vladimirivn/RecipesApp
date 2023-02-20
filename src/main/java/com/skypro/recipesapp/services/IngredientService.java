@@ -17,6 +17,4 @@ public interface IngredientService {
 
     Map<Long, Ingredient> getAllIngredients();
 
-
-
 }
