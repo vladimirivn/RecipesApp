@@ -51,6 +51,28 @@ public class FilesController {
         }
     }
 
+    @GetMapping("/recipe/download/txt")
+    @Operation(summary = "Выгрузка рецептов в txt файл")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Файл рецептов выгружен"),
+            @ApiResponse(responseCode = "400", description = "Ошибка выгрузки файла рецептов")
+    })
+
+    public ResponseEntity<InputStreamResource> downloadTxtFile() {
+        try {
+            File file = recipeService.prepareRecipesToTxt();
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + file)
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.noContent().build();
+        }
+    }
+
     @PostMapping(value = "/recipe/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Загрузка файла рецептов")
     @ApiResponses({

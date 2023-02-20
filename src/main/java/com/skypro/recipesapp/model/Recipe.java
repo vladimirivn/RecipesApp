@@ -1,11 +1,14 @@
 package com.skypro.recipesapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @AllArgsConstructor
 
 public class Recipe {
@@ -15,5 +18,10 @@ public class Recipe {
 
     private List<Ingredient> ingredients;
     private List<String> cookingInstructions;
+
+    @Override
+    public String toString(){
+        return title + "\n Время приготовления: " + cookingTime + " минут";
+    }
 
 }
