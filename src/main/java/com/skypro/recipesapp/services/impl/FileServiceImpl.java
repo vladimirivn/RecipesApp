@@ -33,7 +33,7 @@ public class FileServiceImpl implements FileService {
         }
     }
     @Override
-    public <T> Map<Long, T> readFromFile(Path path, TypeReference<HashMap<Long, T>> typeReference) {
+    public <T> Map<Long, T> readFromFile(Path path, TypeReference<Map<Long, T>> typeReference) {
         try {
             String json = Files.readString(path);
             if (json.isEmpty()) {
