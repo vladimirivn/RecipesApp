@@ -12,7 +12,7 @@ public interface FileService {
 
     <T> void saveToFile(Map<Long, T> map, Path path);
 
-    <T> Map<Long, T> readFromFile(Path path, TypeReference<HashMap<Long, T>> typeReference);
+    <T> Map<Long, T> readFromFile(Path path, TypeReference<Map<Long, T>> typeReference);
 
     void createNewFile(Path path) throws IOException;
 
