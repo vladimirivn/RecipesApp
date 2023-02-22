@@ -22,6 +22,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class FileServiceImpl implements FileService {
 
     private final ObjectMapper objectMapper;
+
     @Override
     public <T> void saveToFile(Map<Long, T> map, Path path) {
         try {
@@ -32,6 +33,7 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public <T> Map<Long, T> readFromFile(Path path, TypeReference<Map<Long, T>> typeReference) {
         try {
@@ -46,6 +48,7 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public void uploadFile(MultipartFile file, Path path) throws IOException {
         Files.createDirectories(path.getParent());
@@ -57,6 +60,13 @@ public class FileServiceImpl implements FileService {
             bis.transferTo(bos);
         }
     }
+
+    @Override
+    public Path saveTxtFile(String content, Path path) throws IOException {
+        createNewFile(path);
+        return Files.writeString(path, content);
+    }
+
     @Override
     public void createNewFile(Path path) throws IOException {
         try {

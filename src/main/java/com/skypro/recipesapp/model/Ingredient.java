@@ -1,10 +1,12 @@
 package com.skypro.recipesapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @AllArgsConstructor
 
 public class Ingredient {
@@ -12,5 +14,10 @@ public class Ingredient {
     private String productName;
     private int count;
     private String unit;
+
+    @Override
+    public String toString() {
+        return productName + " - " + count + " " + unit;
+    }
 
 }

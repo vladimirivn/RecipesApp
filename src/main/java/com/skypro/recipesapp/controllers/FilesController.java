@@ -33,6 +33,7 @@ public class FilesController {
     @Operation(summary = "Выгрузка файла рецептов")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Файл рецептов выгружен"),
+            @ApiResponse(responseCode = "204", description = "Файл рецептов не найден"),
             @ApiResponse(responseCode = "400", description = "Ошибка выгрузки файла рецептов")
     })
 
@@ -42,6 +43,28 @@ public class FilesController {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + file)
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/recipe/download/txt")
+    @Operation(summary = "Выгрузка рецептов в txt файл")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Файл рецептов выгружен"),
+            @ApiResponse(responseCode = "204", description = "Ошибка выгрузки файла рецептов")
+    })
+
+    public ResponseEntity<InputStreamResource> downloadTxtFile() {
+        try {
+            File file = recipeService.prepareRecipesToTxt();
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
                     .contentLength(file.length())
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = " + file)
                     .body(resource);

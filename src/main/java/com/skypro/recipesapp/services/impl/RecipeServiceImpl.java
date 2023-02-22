@@ -2,6 +2,7 @@ package com.skypro.recipesapp.services.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.skypro.recipesapp.exception.ValidationException;
+import com.skypro.recipesapp.model.Ingredient;
 import com.skypro.recipesapp.model.Recipe;
 import com.skypro.recipesapp.services.FileService;
 import com.skypro.recipesapp.services.RecipeService;
@@ -35,6 +36,8 @@ public class RecipeServiceImpl implements RecipeService {
     private String dataFilePath;
     @Value("${name.of.recipe.data.file}")
     private String dataFileName;
+    @Value("${name.of.recipes.txt.file}")
+    private String dataFileNameTxt;
 
     private Path recipePath;
 
@@ -97,4 +100,33 @@ public class RecipeServiceImpl implements RecipeService {
         });
     }
 
+    @Override
+    public File prepareRecipesToTxt() throws IOException {
+        return filesService
+                .saveTxtFile(getAllRecipeToString(), Path.of(dataFilePath, dataFileNameTxt))
+                .toFile();
+    }
+
+    public String getAllRecipeToString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String str1 = " • ";
+
+        for (Recipe recipe : recipes.values()) {
+            stringBuilder.append("\n").append(recipe.toString()).append("\n");
+            stringBuilder.append("\nИнгредиенты: \n");
+
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                stringBuilder.append(str1).append(ingredient.toString()).append("\n");
+            }
+            stringBuilder.append("\nИнструкция приготовления:\n");
+            int i = 0;
+            for (String steps : recipe.getCookingInstructions()) {
+                stringBuilder.append(" ").append(++i).append(" ").append(steps).append("\n");
+            }
+        }
+        return stringBuilder.append("\n").toString();
+    }
+
 }
+

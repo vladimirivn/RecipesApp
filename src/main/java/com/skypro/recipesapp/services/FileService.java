@@ -17,4 +17,6 @@ public interface FileService {
     void createNewFile(Path path) throws IOException;
 
     void uploadFile(MultipartFile file, Path path) throws IOException;
+
+    Path saveTxtFile(String content, Path path) throws IOException;
 }
